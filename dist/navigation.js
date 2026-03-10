@@ -7,7 +7,7 @@ export const DEFAULT_HOST_CONFIG = {
         engine: "engine.thecontentengine.com",
         operations: "operations.thecontentengine.com",
         enginegpt: "ai.thecontentengine.com",
-        meetingbrain: "meetingbrain.thecontentengine.com",
+        meetingbrain: "meetingbrain.ai",
     },
     defaultPaths: {
         engine: "/dashboard",
@@ -17,11 +17,13 @@ export const DEFAULT_HOST_CONFIG = {
         admin: "/settings/workspace",
     },
 };
+/** Known MeetingBrain production hostnames (custom domain + www variant). */
+const MEETINGBRAIN_HOSTS = ["meetingbrain.ai", "www.meetingbrain.ai"];
 /** Check if the current hostname is a known production host. */
 export function isProductionHost(hostname) {
     const host = hostname ??
         (typeof window !== "undefined" ? window.location.hostname : "");
-    return (host.endsWith("thecontentengine.com") || host === "meetingbrain.ai");
+    return (host.endsWith("thecontentengine.com") || MEETINGBRAIN_HOSTS.includes(host));
 }
 /** Detect which area the current hostname belongs to. */
 export function detectCurrentArea(config = DEFAULT_HOST_CONFIG, hostname) {
@@ -31,8 +33,8 @@ export function detectCurrentArea(config = DEFAULT_HOST_CONFIG, hostname) {
         if (host === areaHost)
             return area;
     }
-    // meetingbrain.ai is an alias for the meetingbrain area
-    if (host === "meetingbrain.ai")
+    // meetingbrain.ai / www.meetingbrain.ai are aliases for the meetingbrain area
+    if (MEETINGBRAIN_HOSTS.includes(host))
         return "meetingbrain";
     return null;
 }
@@ -71,7 +73,10 @@ export function navigateToArea(targetArea, currentArea, options) {
         const targetHost = targetArea === "admin"
             ? config.hosts.engine
             : config.hosts[targetArea];
-        if (currentHost !== targetHost) {
+        // Normalize: treat www.meetingbrain.ai and meetingbrain.ai as the same host
+        const isSameHost = currentHost === targetHost ||
+            (MEETINGBRAIN_HOSTS.includes(currentHost) && MEETINGBRAIN_HOSTS.includes(targetHost));
+        if (!isSameHost) {
             // Cross-origin: full page navigation
             window.location.href = url;
             return true;

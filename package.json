@@ -1,6 +1,6 @@
 {
   "name": "@cpnparker/engine-nav",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Shared navigation config and URL resolution for the Content Engine platform",
   "type": "module",
   "main": "./dist/index.js",

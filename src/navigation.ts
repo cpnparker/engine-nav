@@ -9,7 +9,7 @@ export const DEFAULT_HOST_CONFIG: HostConfig = {
     engine: "engine.thecontentengine.com",
     operations: "operations.thecontentengine.com",
     enginegpt: "ai.thecontentengine.com",
-    meetingbrain: "meetingbrain.thecontentengine.com",
+    meetingbrain: "meetingbrain.ai",
   },
   defaultPaths: {
     engine: "/dashboard",
@@ -20,13 +20,16 @@ export const DEFAULT_HOST_CONFIG: HostConfig = {
   },
 };
 
+/** Known MeetingBrain production hostnames (custom domain + www variant). */
+const MEETINGBRAIN_HOSTS = ["meetingbrain.ai", "www.meetingbrain.ai"];
+
 /** Check if the current hostname is a known production host. */
 export function isProductionHost(hostname?: string): boolean {
   const host =
     hostname ??
     (typeof window !== "undefined" ? window.location.hostname : "");
   return (
-    host.endsWith("thecontentengine.com") || host === "meetingbrain.ai"
+    host.endsWith("thecontentengine.com") || MEETINGBRAIN_HOSTS.includes(host)
   );
 }
 
@@ -43,8 +46,8 @@ export function detectCurrentArea(
     if (host === areaHost) return area as Area;
   }
 
-  // meetingbrain.ai is an alias for the meetingbrain area
-  if (host === "meetingbrain.ai") return "meetingbrain";
+  // meetingbrain.ai / www.meetingbrain.ai are aliases for the meetingbrain area
+  if (MEETINGBRAIN_HOSTS.includes(host)) return "meetingbrain";
 
   return null;
 }
@@ -106,7 +109,12 @@ export function navigateToArea(
         ? config.hosts.engine
         : config.hosts[targetArea];
 
-    if (currentHost !== targetHost) {
+    // Normalize: treat www.meetingbrain.ai and meetingbrain.ai as the same host
+    const isSameHost =
+      currentHost === targetHost ||
+      (MEETINGBRAIN_HOSTS.includes(currentHost) && MEETINGBRAIN_HOSTS.includes(targetHost));
+
+    if (!isSameHost) {
       // Cross-origin: full page navigation
       window.location.href = url;
       return true;
