@@ -1,0 +1,37 @@
+{
+  "name": "@cpnparker/engine-nav",
+  "version": "0.1.0",
+  "description": "Shared navigation config and URL resolution for the Content Engine platform",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "peerDependencies": {
+    "lucide-react": ">=0.400.0"
+  },
+  "devDependencies": {
+    "lucide-react": "^0.577.0",
+    "typescript": "^5.0.0",
+    "@types/react": "^19.0.0",
+    "react": "^19.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cpnparker/engine-nav.git"
+  },
+  "license": "UNLICENSED",
+  "private": true
+}
