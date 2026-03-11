@@ -1,4 +1,4 @@
-import { Package, Gauge, Sparkles, Brain, Settings } from "lucide-react";
+import { Package, Gauge, Sparkles, ListChecks, Settings } from "lucide-react";
 import type { RailItemConfig } from "./types";
 
 /**
@@ -26,7 +26,7 @@ export const RAIL_ITEMS: readonly RailItemConfig[] = [
   },
   {
     area: "meetingbrain",
-    icon: Brain,
+    icon: ListChecks,
     label: "MeetingBrain",
     shortLabel: "MB",
   },

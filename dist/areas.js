@@ -1,4 +1,4 @@
-import { Package, Gauge, Sparkles, Brain, Settings } from "lucide-react";
+import { Package, Gauge, Sparkles, ListChecks, Settings } from "lucide-react";
 /**
  * Canonical rail items in display order.
  * Both apps import this to guarantee identical icon/label/order.
@@ -24,7 +24,7 @@ export const RAIL_ITEMS = [
     },
     {
         area: "meetingbrain",
-        icon: Brain,
+        icon: ListChecks,
         label: "MeetingBrain",
         shortLabel: "MB",
     },
